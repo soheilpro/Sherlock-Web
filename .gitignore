@@ -1,6 +1,7 @@
 node_modules
 out
 publish
-.cache
+.parcel-cache
+.ts
 .vscode
 

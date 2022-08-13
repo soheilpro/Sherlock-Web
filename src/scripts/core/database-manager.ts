@@ -1,31 +1,29 @@
 import * as CryptoJS from 'crypto-js';
-import { IFolder } from './ifolder';
-import { IItem } from './iitem';
-import { IDatabase } from './idatabase';
+import { IDatabase, IFolder, IItem } from './types';
 
 export class DatabaseManager {
-  static loadDatabase(data: ArrayBuffer, password: string): IDatabase {
+  public static loadDatabase(data: ArrayBuffer, password: string): IDatabase | undefined {
     if (password)
       data = decrypt(data, password);
 
-    const textDecoder = new TextDecoder('utf-8');
-    const text = textDecoder.decode(data);
+    const text_decoder = new TextDecoder('utf-8');
+    const text = text_decoder.decode(data);
 
-    const domParser = new DOMParser();
-    const document = domParser.parseFromString(text, 'text/xml').documentElement;
+    const dom_parser = new DOMParser();
+    const document = dom_parser.parseFromString(text, 'text/xml').documentElement;
 
     if (document.tagName !== 'data')
-      return null;
+      return undefined;
 
     const database = {
-      rootFolder: readFolder(document, null),
+      root_folder: readFolder(document, undefined),
     };
 
     return database;
   }
 }
 
-function readFolder(element: Element, parent: IFolder): IFolder {
+function readFolder(element: Element, parent: IFolder | undefined): IFolder {
   const folder: IFolder = {
     parent: parent,
     name: element.getAttribute('name') || 'Root',
@@ -44,9 +42,9 @@ function readFolder(element: Element, parent: IFolder): IFolder {
 function readItem(element: Element, parent: IFolder): IItem {
   return {
     parent: parent,
-    name: element.getAttribute('name'),
-    value: element.textContent,
-    isSecret: element.getAttribute('type') === 'password',
+    name: element.getAttribute('name')!,
+    value: element.textContent!,
+    is_secret: element.getAttribute('type') === 'password',
   };
 }
 
@@ -63,7 +61,7 @@ function fixedSizeString(text: string, length: number): string {
     text += text;
 
   if (text.length > length)
-    text = text.substr(0, length);
+    text = text.substring(0, length);
 
   return text;
 }
@@ -72,6 +70,7 @@ function wordArrayToArrayBuffer(wordArray: CryptoJS.LibWordArray): ArrayBuffer {
   const result = new Uint8Array(wordArray.words.length << 2);
   let offset = 0;
 
+  // eslint-disable-next-line @typescript-eslint/prefer-for-of
   for (let i = 0; i < wordArray.words.length; i++) {
     const word = wordArray.words[i];
     result[offset++] = word >> 24;

@@ -1,8 +1,12 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { App } from './components/app';
+import { StorageManager } from './storage';
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('app')
-);
+const storages = StorageManager.getStorages();
+
+for (const storage of storages)
+  storage.init().catch(console.error);
+
+const container = document.getElementById('app')!;
+createRoot(container).render(<App storages={ storages } />);

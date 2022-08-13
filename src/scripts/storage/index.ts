@@ -1,2 +1,2 @@
-export * from './ifile';
-export * from './istorage';
+export * from './storage-manager';
+export * from './types';

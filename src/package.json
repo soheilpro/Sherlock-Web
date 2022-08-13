@@ -1,29 +1,45 @@
 {
   "name": "sherlock",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "scripts": {
-    "start": "parcel ./index.html --out-dir ../out",
-    "publish": "rm -rf publish && parcel build ./index.html --out-dir ../publish",
+    "build:ts": "tsc --build tsconfig.json",
+    "build": "npm run build:ts",
+    "start": "parcel serve ./index.html --dist-dir ../out",
+    "publish": "rm -rf ../publish && parcel build ./index.html --dist-dir ../publish --no-cache",
     "clean": "rm -rf ../out",
-    "lint": "tslint -p ."
+    "lint:ts": "eslint --ext .ts,.tsx .",
+    "lint": "npm run lint:ts"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "crypto-js": "^3.1.9-1",
-    "react": "^16.3.1",
-    "react-dom": "^16.3.1"
+    "axios": "0.27.2",
+    "classnames": "2.3.1",
+    "crypto-js": "3.1.9-1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/crypto-js": "^3.1.39",
+    "@parcel/packager-raw-url": "2.7.0",
+    "@parcel/transformer-webmanifest": "2.7.0",
+    "@types/axios": "0.14.0",
+    "@types/crypto-js": "3.1.39",
     "@types/gapi": "0.0.35",
     "@types/gapi.auth2": "0.0.47",
-    "@types/gapi.client.drive": "^3.0.1",
-    "@types/react": "^16.3.5",
-    "@types/react-dom": "^16.0.4",
-    "less": "^3.0.1",
-    "parcel-bundler": "^1.7.0",
-    "tslint": "^5.9.1",
-    "typescript": "^2.8.1"
+    "@types/gapi.client.drive": "3.0.1",
+    "@types/react": "18.0.17",
+    "@types/react-dom": "18.0.6",
+    "@typescript-eslint/eslint-plugin": "5.6.0",
+    "@typescript-eslint/eslint-plugin-tslint": "5.6.0",
+    "@typescript-eslint/parser": "5.6.0",
+    "buffer": "6.0.3",
+    "eslint": "8.4.1",
+    "eslint-plugin-import": "2.25.3",
+    "eslint-plugin-unicorn": "39.0.0",
+    "parcel": "2.7.0",
+    "postcss": "8.4.16",
+    "process": "0.11.10",
+    "tailwindcss": "3.1.8",
+    "tailwindcss-touch": "1.0.1",
+    "tslint": "5.9.1",
+    "typescript": "4.5.3"
   }
 }

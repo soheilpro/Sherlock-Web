@@ -1,29 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
-  outline: none;
-  box-sizing: border-box;
+  @apply outline-primary;
 }
 
-body,
-input,
-button {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  font-size: 15px;
-  color: #222;
+html {
+  @apply bg-gray-100;
+  @apply font-medium;
+  @apply text-sm;
+  @apply sm:text-base;
+  @apply sm:font-semibold;
+  @apply sm:pb-6;
 }
 
-body {
-  background-color: #eee;
+.button {
+  @apply px-3;
+  @apply py-2.5;
+  @apply rounded-lg;
+  @apply shadow;
+  @apply sm:px-5;
+  @apply sm:py-2.5;
 }
 
-input {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+.button-primary {
+  @apply button;
+  @apply bg-primary;
+  @apply text-white;
+  @apply disabled:bg-gray-200;
+  @apply disabled:text-gray-400;
+  @apply disabled:fill-gray-400;
 }
 
-#app {
-  max-width: 500px;
-  margin: 0 auto;
-  padding-top: 10px;
-  padding-bottom: 10px;
+.button-secondary {
+  @apply button;
+  @apply bg-white;
+  @apply disabled:text-gray-400;
+  @apply disabled:fill-gray-400;
+  @apply hover-hover:hover:bg-primary;
+  @apply hover-hover:hover:text-white;
+  @apply hover-hover:hover:fill-white;
+  @apply hover-hover:disabled:hover:bg-white;
+  @apply hover-hover:disabled:hover:text-gray-400;
+  @apply hover-hover:disabled:hover:fill-gray-400;
+}
+
+.button-link {
+  @apply text-gray-600;
+  @apply sm:px-5;
+  @apply sm:py-3;
+  @apply hover-hover:hover:underline;
+}
+
+.input-text {
+  @apply px-4;
+  @apply py-3;
+  @apply rounded-full;
+  @apply placeholder-gray-400;
+  @apply border;
+  @apply border-gray-200;
+  @apply sm:px-4;
+  @apply sm:py-3;
+}
+
+.external-text {
+  @apply break-words;
+  word-break: break-word;
+}
+
+.shake {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(4px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-8px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(8px, 0, 0);
+  }
 }

@@ -1,64 +1,45 @@
+import classNames from 'classnames';
 import * as React from 'react';
 
-require('./index.less');
-
 interface IPasswordProps {
+  is_invalid: boolean;
   onEnter(password: string): void;
   onCancel(): void;
 }
 
-interface IPasswordState {
-  password: string;
-}
+export function Password(props: IPasswordProps): JSX.Element {
+  const [ password, set_password ] = React.useState('');
+  const [ is_shaking, set_is_shaking ] = React.useState(props.is_invalid);
 
-export class Password extends React.PureComponent<IPasswordProps, IPasswordState> {
-  constructor(props: IPasswordProps) {
-    super(props);
+  React.useEffect(() => {
+    set_is_shaking(props.is_invalid);
+  });
 
-    this.state = {
-      password: '',
-    };
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    set_password(event.target.value);
   }
 
-  componentWillReceiveProps(props: IPasswordProps): void {
-    this.setState({
-      password: '',
-    });
-  }
-
-  private handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    this.setState({
-      password: event.target.value,
-    });
-  }
-
-  private async handleFormSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
+  async function handleFormSubmit(event: React.FormEvent): Promise<void> {
     event.preventDefault();
 
-    if (this.state.password)
-      this.props.onEnter(this.state.password);
+    if (password)
+      props.onEnter(password);
 
-      this.setState({
-        password: '',
-      });
-    }
-
-  private handleCancel(event: React.MouseEvent<HTMLElement>): void {
-    event.preventDefault();
-
-    this.props.onCancel();
+    set_password('');
+    set_is_shaking(false);
   }
 
-  render(): JSX.Element {
-    return (
-      <div className="password-component">
-        <div className="title">Password?</div>
-        <form onSubmit={this.handleFormSubmit.bind(this)}>
-          <input className="input" type="password" autoComplete="off" autoFocus={true} value={this.state.password} onChange={this.handleInputChange.bind(this)} />
-          <input className="ok" type="submit" value="OK" />
-          <a className="cancel" href="" onClick={this.handleCancel.bind(this)}>Cancel</a>
-        </form>
-      </div>
-    );
-  }
+  return (
+    <div className="flex flex-col items-center">
+      <div className="h-12"></div>
+      <h1 className="font-bold text-3xl text-center">Password</h1>
+      <div className="h-12"></div>
+      <form className="w-64 grid gap-5" onSubmit={ handleFormSubmit }>
+        <input type="password" value={ password } autoComplete="off" autoFocus={ true } className={ classNames('input-text min-w-64', { 'shake': is_shaking }) } onChange={ handleInputChange } />
+        <button type="submit" disabled={ !password } className="button-primary min-w-64">OK</button>
+        <div></div>
+        <button className="button-link justify-self-center" onClick={ props.onCancel }>Cancel</button>
+      </form>
+    </div>
+  );
 }

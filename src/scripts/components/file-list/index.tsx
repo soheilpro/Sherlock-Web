@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { IFile } from '../../storage';
-
-require('./index.less');
+import { File } from '../file';
 
 interface IFileListProps {
   files: IFile[];
@@ -9,42 +8,28 @@ interface IFileListProps {
   onCancel(): void;
 }
 
-interface IFileListState {
+export function FileList(props: IFileListProps): JSX.Element {
+  return (
+    <div className="flex flex-col items-center">
+      <div className="h-12"></div>
+      <h1 className="font-bold text-3xl text-center">Database</h1>
+      <div className="h-12"></div>
+      <div className="min-w-64 grid gap-5">
+        {
+          sortFiles(props.files).map(file => (
+            <File file={ file } onSelect={ () => props.onSelect(file) } key={ file.name } />
+          ))
+        }
+        <div></div>
+        <button className="button-link justify-self-center" onClick={ props.onCancel }>Cancel</button>
+      </div>
+    </div>
+  );
 }
 
-export class FileList extends React.PureComponent<IFileListProps, IFileListState> {
-  private sortFiles(files: IFile[]): IFile[] {
-    files = [...this.props.files];
-    files.sort((file1, file2) => file1.name.localeCompare(file2.name));
+function sortFiles(files: IFile[]): IFile[] {
+  files = [ ...files ];
+  files.sort((file1, file2) => file1.name.localeCompare(file2.name));
 
-    return files;
-  }
-
-  private async handleButtonClick(file: IFile, event: React.MouseEvent<HTMLElement>): Promise<void> {
-    event.preventDefault();
-
-    this.props.onSelect(file);
-  }
-
-  private handleCancel(event: React.MouseEvent<HTMLElement>): void {
-    event.preventDefault();
-
-    this.props.onCancel();
-  }
-
-  render(): JSX.Element {
-    return (
-      <div className="file-list-component">
-        <div className="title">Database?</div>
-        {
-          this.sortFiles(this.props.files).map(file => {
-            return (
-              <button className="file" onClick={this.handleButtonClick.bind(this, file)} key={file.name}>{ file.name }</button>
-            );
-          })
-        }
-        <a className="cancel" href="" onClick={this.handleCancel.bind(this)}>Cancel</a>
-      </div>
-    );
-  }
+  return files;
 }

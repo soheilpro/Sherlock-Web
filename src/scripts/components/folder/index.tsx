@@ -1,82 +1,26 @@
 import * as React from 'react';
 import { IFolder } from '../../core';
-import { FolderRow } from '../folder-row';
-import { ItemRow } from '../item-row';
-
-require('./index.less');
+import { FolderFillIcon, FolderOpenFillIcon } from '../images/icons';
 
 interface IFolderProps {
   folder: IFolder;
-  onFolderSelect?(folder: IFolder): void;
+  is_opened?: boolean;
+  indentation?: number;
+  onSelect(): void;
 }
 
-interface IFolderState {
-  query: string;
-}
-
-export class Folder extends React.PureComponent<IFolderProps, IFolderState> {
-  constructor(props: IFolderProps) {
-    super(props);
-
-    this.state = {
-      query: '',
-    };
-  }
-
-  componentWillReceiveProps(props: IFolderProps): void {
-    this.setState({
-      query: '',
-    });
-  }
-
-  private handleSearchChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    this.setState({
-      query: event.target.value,
-    });
-  }
-
-  private handleFolderSelect(folder: IFolder): void {
-    if (this.props.onFolderSelect)
-      this.props.onFolderSelect(folder);
-  }
-
-  render(): JSX.Element {
-    const folders = this.props.folder.folders.filter(folder => folder.name.toLowerCase().indexOf(this.state.query.toLowerCase()) !== -1);
-    const items = this.props.folder.items.filter(item => item.name.toLowerCase().indexOf(this.state.query.toLowerCase()) !== -1);
-
-    return (
-      <div className="folder-component">
-        <div>
-          <div className="title">Search</div>
-          <input className="search" value={this.state.query} onChange={this.handleSearchChange.bind(this)} />
-        </div>
+export function Folder(props: IFolderProps): JSX.Element {
+  return (
+    <button className="px-3 py-2.5 flex justify-between items-center bg-white text-left rounded hover-hover:hover:bg-primary hover-hover:hover:text-white sm:py-3" onClick={ props.onSelect }>
+      <div className="flex" style={{ paddingLeft: `${(props.indentation || 0) * .5}rem` }}>
         {
-          folders.length > 0 &&
-            <div>
-              <div className="title">Folders</div>
-              <div className="folder-row-list">
-              {
-                folders.map((folder, index) => {
-                  return <FolderRow folder={folder} onSelect={this.handleFolderSelect.bind(this, folder)} key={index} />;
-                })
-              }
-              </div>
-            </div>
+          (props.is_opened) ?
+            <FolderOpenFillIcon className="mt-0.5 mr-2 w-5 h-5 shrink-0 fill-amber-400" />
+            :
+            <FolderFillIcon className="mt-0.5 mr-2 w-5 h-5 shrink-0 fill-amber-400" />
         }
-        {
-          items.length > 0 &&
-            <div>
-              <div className="title">Items</div>
-              <div  className="item-row-list">
-              {
-                items.map((item, index) => {
-                  return <ItemRow item={item} key={index} />;
-                })
-              }
-              </div>
-            </div>
-        }
+        <span>{ props.folder.name }</span>
       </div>
-    );
-  }
+    </button>
+  );
 }

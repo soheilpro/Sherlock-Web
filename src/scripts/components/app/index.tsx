@@ -1,135 +1,122 @@
 import * as React from 'react';
 import { IDatabase, DatabaseManager } from '../../core';
 import { IStorage, IFile } from '../../storage';
-import { TestStorage } from '../../storage/test';
-import { LocalStorage } from '../../storage/local';
-import { GoogleDriveStorage } from '../../storage/google-drive';
-import { StorageList } from '../storage-list';
-import { FileList } from '../file-list';
-import { Password } from '../password';
 import { Database } from '../database';
-
-require('./index.less');
+import { FileList } from '../file-list';
+import { Layout } from '../layout';
+import { Loading } from '../loading';
+import { Password } from '../password';
+import { StorageList } from '../storage-list';
 
 interface IAppProps {
-}
-
-interface IAppState {
   storages: IStorage[];
-  storage: IStorage;
-  files: IFile[];
-  file: IFile;
-  fileData: ArrayBuffer;
-  database: IDatabase;
 }
 
-export class App extends React.PureComponent<IAppProps, IAppState> {
-  private static createStorages(): IStorage[] {
-    const storages = [
-      new LocalStorage,
-      new GoogleDriveStorage(),
-    ];
+export function App(props: IAppProps): JSX.Element {
+  const [ is_loading_files, set_is_loading_files ] = React.useState(false);
+  const [ is_loading_file_data, set_is_loading_file_data ] = React.useState(false);
+  const [ storage, set_storage ] = React.useState<IStorage>();
+  const [ files, set_files ] = React.useState<IFile[]>();
+  const [ file, set_file ] = React.useState<IFile>();
+  const [ file_data, set_file_data ] = React.useState<ArrayBuffer>();
+  const [ is_password_invalid, set_is_password_invalid ] = React.useState(false);
+  const [ database, set_database ] = React.useState<IDatabase>();
 
-    if (process.env.NODE_ENV !== 'production')
-      storages.unshift(new TestStorage());
-
-    return storages;
+  function reset(): void {
+    set_is_loading_files(false);
+    set_is_loading_file_data(false);
+    set_storage(undefined);
+    set_files(undefined);
+    set_file(undefined);
+    set_file_data(undefined);
+    set_is_password_invalid(false);
+    set_database(undefined);
   }
 
-  constructor(props: IAppProps) {
-    super(props);
+  async function handleStorageSelect(storage: IStorage): Promise<void> {
+    if (storage.is_slow)
+      set_is_loading_files(true);
 
-    this.state = {
-      storages: App.createStorages(),
-      storage: null,
-      files: null,
-      file: null,
-      fileData: null,
-      database: null,
-    };
-  }
-
-  async componentDidMount(): Promise<void> {
-    for (const storage of this.state.storages) {
-      await storage.init();
-
-      this.forceUpdate();
-    }
-  }
-
-  private reset(): void {
-    this.setState({
-      storage: null,
-      files: null,
-      file: null,
-      fileData: null,
-      database: null,
-    });
-  }
-
-  private async handleStorageSelect(storage: IStorage): Promise<void> {
     const files = await storage.getFiles();
+
+    if (storage.is_slow)
+      set_is_loading_files(false);
 
     if (files.length === 1) {
       const file = files[0];
-      const fileData = await storage.getFileData(file);
-      const database = DatabaseManager.loadDatabase(fileData, '');
+      const file_data = await storage.getFileData(file);
+      const database = DatabaseManager.loadDatabase(file_data, '');
 
-      this.setState({
-        storage: storage,
-        files: files,
-        file: file,
-        fileData: fileData,
-        database: database,
-      });
+      set_file(file);
+      set_file_data(file_data);
+      set_is_password_invalid(false);
+      set_database(database);
     }
-    else {
-      this.setState({
-        storage: storage,
-        files: files,
-      });
-    }
+
+    set_files(files);
+    set_storage(storage);
   }
 
-  private async handleFileSelect(file: IFile): Promise<void> {
-    const fileData = await this.state.storage.getFileData(file);
-    const database = DatabaseManager.loadDatabase(fileData, '');
+  async function handleFileSelect(file: IFile): Promise<void> {
+    if (storage!.is_slow)
+      set_is_loading_file_data(true);
 
-    this.setState({
-      file: file,
-      fileData: fileData,
-      database: database,
-    });
+    const file_data = await storage!.getFileData(file);
+
+    if (storage!.is_slow)
+      set_is_loading_file_data(false);
+
+    const database = DatabaseManager.loadDatabase(file_data, '');
+
+    set_file(file);
+    set_file_data(file_data);
+    set_is_password_invalid(false);
+    set_database(database);
   }
 
-  private handleFileCancel(): void {
-    this.reset();
+  function handleFileCancel(): void {
+    reset();
   }
 
-  private handlePasswordEnter(password: string): void {
-    this.setState({
-      database: DatabaseManager.loadDatabase(this.state.fileData, password),
-    });
+  function handlePasswordEnter(password: string): void {
+    const database = DatabaseManager.loadDatabase(file_data!, password);
+
+    if (!database)
+      set_is_password_invalid(true);
+
+    set_database(database);
   }
 
-  private handlePasswordCancel(): void {
-    this.reset();
+  function handlePasswordCancel(): void {
+    reset();
   }
 
-  private handleDatabaseUnload(): void {
-    this.reset();
+  function handleDatabaseUnload(): void {
+    reset();
   }
 
-  render(): JSX.Element {
-    if (!this.state.storage)
-      return <StorageList storages={this.state.storages} onSelect={this.handleStorageSelect.bind(this)} />;
+  function renderContent(): JSX.Element {
+    if (is_loading_files)
+      return <Loading message='Loading databases' />;
 
-    if (!this.state.file)
-      return <FileList files={this.state.files} onSelect={this.handleFileSelect.bind(this)} onCancel={this.handleFileCancel.bind(this)} />;
+    if (is_loading_file_data)
+      return <Loading message={'Loading database'} />;
 
-    if (!this.state.database)
-      return <Password onEnter={this.handlePasswordEnter.bind(this)} onCancel={this.handlePasswordCancel.bind(this)} />;
+    if (!storage)
+      return <StorageList storages={ props.storages } onSelect={ handleStorageSelect } />;
 
-    return <Database database={this.state.database} onUnload={this.handleDatabaseUnload.bind(this)} />;
+    if (!file)
+      return <FileList files={ files! } onSelect={ handleFileSelect } onCancel={ handleFileCancel } />;
+
+    if (!database)
+      return <Password is_invalid={ is_password_invalid } onEnter={ handlePasswordEnter } onCancel={ handlePasswordCancel } />;
+
+    return <Database database={ database } file={ file } storage={ storage } onUnload={ handleDatabaseUnload } />;
   }
+
+  return (
+    <Layout>
+      { renderContent() }
+    </Layout>
+  );
 }

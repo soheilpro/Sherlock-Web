@@ -1,20 +1,25 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noFallthroughCasesInSwitch": true,
-    "noEmitOnError": true,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "sourceMap": true,
+    "incremental": true,
     "jsx": "react",
-    "lib": [ "es5", "es2015.promise", "dom" ],
+    "lib": [ "ES2015", "DOM" ],
     "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "removeComments": true,
+    "rootDir": "./scripts",
+    "sourceMap": true,
+    "sourceRoot": "/",
+    "strict": true,
+    "target": "es5",
+    "tsBuildInfoFile": "./.ts/.tsbuildinfo"
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
   ]
 }
