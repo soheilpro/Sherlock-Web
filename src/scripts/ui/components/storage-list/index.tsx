@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IStorage } from '../../../storage';
+import { IStorage } from '../../../core';
 import { Storage } from '../storage';
 
 interface IStorageListProps {
@@ -16,7 +16,7 @@ export function StorageList(props: IStorageListProps): JSX.Element {
       <div className="min-w-40 grid gap-5">
         {
           props.storages.map(storage => (
-            <Storage storage={ storage } key={ storage.id } onSelect={ () => props.onSelect(storage) } />
+            <Storage storage={ storage } onSelect={ () => props.onSelect(storage) } key={ storage.id } />
           ))
         }
       </div>

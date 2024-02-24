@@ -1,6 +1,6 @@
 {
   "name": "sherlock",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "scripts": {
     "build:ts": "tsc --build tsconfig.json",
     "build": "npm run build:ts",
@@ -14,14 +14,14 @@
   },
   "dependencies": {
     "classnames": "2.3.2",
-    "crypto-js": "3.1.9-1",
+    "crypto-js": "4.2.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "2.7.0",
     "@parcel/transformer-webmanifest": "2.7.0",
-    "@types/crypto-js": "3.1.39",
+    "@types/crypto-js": "4.2.2",
     "@types/gapi": "0.0.35",
     "@types/gapi.auth2": "0.0.47",
     "@types/gapi.client.drive": "3.0.1",

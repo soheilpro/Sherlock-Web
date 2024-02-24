@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IStorage } from '../../../storage';
+import { IStorage } from '../../../core';
 import { Bug2LineIcon, ComputerLineIcon, DriveFillIcon } from '../images/icons';
 
 interface IStorageProps {
@@ -32,6 +32,10 @@ export function Storage(props: IStorageProps): JSX.Element {
           }
           {
             (props.storage.id === 'local') &&
+              <ComputerLineIcon className="w-8 h-8 opacity-90" />
+          }
+          {
+            (props.storage.id === 'file-system') &&
               <ComputerLineIcon className="w-8 h-8 opacity-90" />
           }
           {

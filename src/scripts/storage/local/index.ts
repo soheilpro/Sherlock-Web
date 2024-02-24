@@ -1,5 +1,5 @@
-import { EventEmitter } from '../../event-emitter';
-import { IFile, IStorage, StorageEventType } from '../types';
+import { IFile, IStorage, StorageEventType } from '../../core';
+import { EventEmitter } from '../../util';
 
 interface ILocalStorageFile extends IFile {
   handle: File;
@@ -9,13 +9,18 @@ export class LocalStorage extends EventEmitter<StorageEventType> implements ISto
   public id = 'local';
   public name = 'Local';
   public is_slow = false;
+  public is_writable = false;
   public is_initialized = true;
+
+  public static isAvailable(): boolean {
+    return true;
+  }
 
   public async init(): Promise<void> {
     return;
   }
 
-  public getFiles(): Promise<IFile[]> {
+  public getFiles(): Promise<IFile[] | undefined> {
     return new Promise(resolve => {
       const input_element = document.createElement('input');
       input_element.type = 'file';
@@ -47,5 +52,9 @@ export class LocalStorage extends EventEmitter<StorageEventType> implements ISto
 
       file_reader.readAsArrayBuffer(file.handle);
     });
+  }
+
+  public save(file: IFile, data: ArrayBuffer): Promise<void> {
+    throw new Error('Not supported.');
   }
 }

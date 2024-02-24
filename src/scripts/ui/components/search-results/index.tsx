@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { IFolder } from '../../../core';
-import { FolderList } from '../folder-list';
+import { IDatabase, IFolder } from '../../../core';
+import { FolderView } from '../folder-view';
 
 interface ISearchResultsProps {
   folders: IFolder[];
+  database: IDatabase;
   onFolderSelect(folder: IFolder): void;
 }
 
@@ -29,7 +30,15 @@ export function SearchResults(props: ISearchResultsProps): JSX.Element {
           <div key={ folder_path }>
             <div className="font-bold text-sm text-gray-600">{ folder_path }</div>
             <div className="h-3"></div>
-            <FolderList folders={ groups.get(folder_path)! } onFolderSelect={ props.onFolderSelect } />
+            <div className="flex flex-col items-strech gap-y-2">
+              {
+                groups.get(folder_path)!.map(folder => (
+                  <button className="px-2.5 py-3 bg-white rounded border-2 border-transparent hover-hover:hover:border-primary" onClick={ () => props.onFolderSelect(folder) }>
+                    <FolderView folder={ folder } no_wrap={ true } />
+                  </button>
+                ))
+              }
+            </div>
           </div>
         ))
       }
@@ -41,7 +50,7 @@ function getParentFolders(folder: IFolder): IFolder[] {
   const parent_folders = [];
   let parent_folder: IFolder | undefined = folder;
 
-  while (parent_folder?.parent) {
+  while (parent_folder) {
     parent_folders.unshift(parent_folder);
     parent_folder = parent_folder.parent;
   }
@@ -50,5 +59,7 @@ function getParentFolders(folder: IFolder): IFolder[] {
 }
 
 function getFolderPath(folder: IFolder): string {
-  return getParentFolders(folder).map(folder => folder.name).join(' → ');
+  const parent_folders = getParentFolders(folder);
+
+  return parent_folders.map(folder => folder.name).join(' → ');
 }

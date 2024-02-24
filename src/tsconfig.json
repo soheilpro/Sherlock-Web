@@ -4,7 +4,7 @@
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "jsx": "react",
-    "lib": [ "ES2015", "DOM" ],
+    "lib": [ "ES2016", "DOM" ],
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,

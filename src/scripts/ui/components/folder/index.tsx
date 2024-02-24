@@ -1,26 +1,63 @@
+import classNames from 'classnames';
 import * as React from 'react';
-import { IFolder } from '../../../core';
-import { FolderFillIcon, FolderOpenFillIcon } from '../images/icons';
+import { IDatabase, IFolder } from '../../../core';
+import { useEditContext } from '../../contexts';
+import { isInteractiveElement } from '../../util';
+import { FolderEdit } from '../folder-edit';
+import { FolderView } from '../folder-view';
 
 interface IFolderProps {
   folder: IFolder;
-  is_opened?: boolean;
-  indentation?: number;
-  onSelect(): void;
+  database: IDatabase;
+  is_selected: boolean;
+  onClick(event: React.MouseEvent): void;
+  onDoubleClick(event: React.MouseEvent): void;
 }
 
 export function Folder(props: IFolderProps): JSX.Element {
+  const edit_context = useEditContext();
+
+  const is_editing = edit_context.editing_folder === props.folder;
+
+  function handleClick(event: React.MouseEvent<HTMLDivElement>): void {
+    if (isInteractiveElement(event.target as Element))
+      return;
+
+    props.onClick(event);
+  }
+
+  function handleDoubleClick(event: React.MouseEvent<HTMLDivElement>): void {
+    if (isInteractiveElement(event.target as Element))
+      return;
+
+    if (is_editing)
+      return;
+
+    props.onDoubleClick(event);
+
+    document.getSelection()?.removeAllRanges();
+  }
+
+  function handleEditAccept(folder: { name: string; }): void {
+    props.database.updateFolder(props.folder, {
+      name: folder.name,
+    });
+
+    edit_context.setEditingFolder(undefined);
+  }
+
+  function handleEditCancel(): void {
+    edit_context.setEditingFolder(undefined);
+  }
+
   return (
-    <button className="px-3 py-2.5 flex justify-between items-center bg-white text-left rounded hover-hover:hover:bg-primary hover-hover:hover:text-white sm:py-3" onClick={ props.onSelect }>
-      <div className="flex" style={{ paddingLeft: `${ (props.indentation || 0) * .5 }rem` }}>
-        {
-          (props.is_opened) ?
-            <FolderOpenFillIcon className="mt-0.5 mr-2 w-5 h-5 shrink-0 fill-amber-400" />
-            :
-            <FolderFillIcon className="mt-0.5 mr-2 w-5 h-5 shrink-0 fill-amber-400" />
-        }
-        <span>{ props.folder.name }</span>
-      </div>
-    </button>
+    <div className={ classNames('px-4 py-3 flex flex-col bg-white border-2 rounded cursor-default sm:pl-3 sm:py-2.5', { 'border-white': !props.is_selected }, { 'border-primary': props.is_selected }) } onClick={ handleClick } onDoubleClick={ handleDoubleClick }>
+      {
+        (!is_editing) ?
+          <FolderView folder={ props.folder } />
+          :
+          <FolderEdit folder={ props.folder } onAccept={ handleEditAccept } onCancel={ handleEditCancel } />
+      }
+    </div>
   );
 }

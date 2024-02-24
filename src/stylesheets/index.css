@@ -64,6 +64,17 @@ html {
   @apply sm:py-3;
 }
 
+.input-text-compact {
+  @apply px-2.5;
+  @apply py-2.5;
+  @apply rounded;
+  @apply placeholder-gray-400;
+  @apply border;
+  @apply border-gray-300;
+  @apply sm:px-4;
+  @apply sm:py-3;
+}
+
 .external-text {
   @apply break-words;
   word-break: break-word;

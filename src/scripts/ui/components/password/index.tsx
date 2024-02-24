@@ -38,7 +38,7 @@ export function Password(props: IPasswordProps): JSX.Element {
         <input type="password" value={ password } autoComplete="off" autoFocus={ true } className={ classNames('input-text min-w-64', { 'shake': is_shaking }) } onChange={ handleInputChange } />
         <button type="submit" disabled={ !password } className="button-primary min-w-64">OK</button>
         <div></div>
-        <button className="button-link justify-self-center" onClick={ props.onCancel }>Cancel</button>
+        <button type="button" className="button-link justify-self-center" onClick={ props.onCancel }>Cancel</button>
       </form>
     </div>
   );

@@ -7,6 +7,8 @@ Sherlock is a web application for managing passwords and other personal informat
 + Windows GUI: https://github.com/soheilpro/Sherlock-Win
 
 ## Version History
++ **3.0**
+	+ Added support for editing database files.
 + **2.0**
 	+ Rewrite as a PWA.
 + **1.0**
@@ -23,7 +25,7 @@ Please report issues or better yet, fork, fix and send a pull request.
 + http://github.com/soheilpro
 
 ## Copyright and License
-Copyright 2022 Soheil Rashidi.
+Copyright 2024 Soheil Rashidi.
 
 Licensed under the The MIT License (the "License");
 you may not use this work except in compliance with the License.

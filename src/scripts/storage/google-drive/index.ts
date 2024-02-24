@@ -1,5 +1,5 @@
-import { EventEmitter } from '../../event-emitter';
-import { IFile, IStorage, StorageEventType } from '../types';
+import { IFile, IStorage, StorageEventType } from '../../core';
+import { EventEmitter } from '../../util';
 
 interface IGoogleDriveStorageFile extends IFile {
   handle: gapi.client.drive.File;
@@ -9,7 +9,12 @@ export class GoogleDriveStorage extends EventEmitter<StorageEventType> implement
   public id = 'google-drive';
   public name = 'Google Drive';
   public is_slow = true;
+  public is_writable = false;
   public is_initialized = false;
+
+  public static isAvailable(): boolean {
+    return true;
+  }
 
   public async init(): Promise<void> {
     if (this.is_initialized)
@@ -38,7 +43,7 @@ export class GoogleDriveStorage extends EventEmitter<StorageEventType> implement
     });
   }
 
-  public async getFiles(): Promise<IFile[]> {
+  public async getFiles(): Promise<IFile[] | undefined> {
     // Must be called in response to user events
     if (!gapi.auth2.getAuthInstance().isSignedIn.get())
       await gapi.auth2.getAuthInstance().signIn();
@@ -67,5 +72,9 @@ export class GoogleDriveStorage extends EventEmitter<StorageEventType> implement
     }
 
     return response.arrayBuffer();
+  }
+
+  public save(file: IFile, data: ArrayBuffer): Promise<void> {
+    throw new Error('Not supported.');
   }
 }

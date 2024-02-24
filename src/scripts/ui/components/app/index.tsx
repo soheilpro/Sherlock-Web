@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IDatabase, DatabaseManager } from '../../../core';
-import { IStorage, IFile } from '../../../storage';
+import { IDatabase, IDatabaseManager, IFile, IStorage } from '../../../core';
+import { EditContextProvider } from '../../contexts';
 import { Database } from '../database';
 import { FileList } from '../file-list';
 import { Layout } from '../layout';
@@ -10,6 +10,7 @@ import { StorageList } from '../storage-list';
 
 interface IAppProps {
   storages: IStorage[];
+  database_manager: IDatabaseManager;
 }
 
 export function App(props: IAppProps): JSX.Element {
@@ -42,10 +43,13 @@ export function App(props: IAppProps): JSX.Element {
     if (storage.is_slow)
       set_is_loading_files(false);
 
+    if (!files)
+      return;
+
     if (files.length === 1) {
       const file = files[0];
       const file_data = await storage.getFileData(file);
-      const database = DatabaseManager.loadDatabase(file_data, '');
+      const database = props.database_manager.loadDatabase(file_data, '');
 
       set_file(file);
       set_file_data(file_data);
@@ -66,7 +70,7 @@ export function App(props: IAppProps): JSX.Element {
     if (storage!.is_slow)
       set_is_loading_file_data(false);
 
-    const database = DatabaseManager.loadDatabase(file_data, '');
+    const database = props.database_manager.loadDatabase(file_data, '');
 
     set_file(file);
     set_file_data(file_data);
@@ -79,7 +83,7 @@ export function App(props: IAppProps): JSX.Element {
   }
 
   function handlePasswordEnter(password: string): void {
-    const database = DatabaseManager.loadDatabase(file_data!, password);
+    const database = props.database_manager.loadDatabase(file_data!, password);
 
     if (!database)
       set_is_password_invalid(true);
@@ -111,12 +115,14 @@ export function App(props: IAppProps): JSX.Element {
     if (!database)
       return <Password is_invalid={ is_password_invalid } onEnter={ handlePasswordEnter } onCancel={ handlePasswordCancel } />;
 
-    return <Database database={ database } file={ file } storage={ storage } onUnload={ handleDatabaseUnload } />;
+    return <Database database={ database } file={ file } storage={ storage } database_manager={ props.database_manager } onUnload={ handleDatabaseUnload } />;
   }
 
   return (
-    <Layout>
-      { renderContent() }
-    </Layout>
+    <EditContextProvider>
+      <Layout>
+        { renderContent() }
+      </Layout>
+    </EditContextProvider>
   );
 }
