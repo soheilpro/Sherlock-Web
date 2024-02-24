@@ -59,7 +59,7 @@ export class GoogleDriveStorage extends EventTarget implements IStorage {
         'alt': 'media',
       },
       headers: {
-        'Authorization': `Bearer ${oauth_token}`,
+        'Authorization': `Bearer ${ oauth_token }`,
       },
       responseType: 'arraybuffer',
     });

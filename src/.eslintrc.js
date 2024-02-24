@@ -54,8 +54,9 @@ module.exports = {
     ],
     "@typescript-eslint/naming-convention": [
       "error",
-      { "selector": "variable", "format": [ "snake_case", "PascalCase" ] }
+      { "selector": "variable", "format": [ "snake_case", "PascalCase", "UPPER_CASE" ] }
     ],
+    "@typescript-eslint/no-base-to-string": "error",
     "@typescript-eslint/no-floating-promises": "error",
     "@typescript-eslint/no-for-in-array": "error",
     "@typescript-eslint/no-misused-new": "error",
@@ -69,6 +70,7 @@ module.exports = {
     "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
     "@typescript-eslint/no-unnecessary-qualifier": "error",
     "@typescript-eslint/no-unnecessary-type-arguments": "error",
+    "@typescript-eslint/no-unnecessary-type-assertion": "error",
     "@typescript-eslint/no-unused-expressions": "error",
     "@typescript-eslint/prefer-for-of": "error",
     "@typescript-eslint/prefer-namespace-keyword": "error",
@@ -76,6 +78,9 @@ module.exports = {
       "error",
       "single"
     ],
+    "@typescript-eslint/restrict-plus-operands": "error",
+    "@typescript-eslint/restrict-template-expressions": "error",
+    "@typescript-eslint/require-array-sort-compare": "error",
     "@typescript-eslint/semi": [
       "error",
       "always"
@@ -142,8 +147,19 @@ module.exports = {
     "no-eval": "error",
     "no-extra-bind": "error",
     "no-fallthrough": "error",
+    "no-implicit-coercion": "error",
     "no-invalid-this": "error",
     "no-irregular-whitespace": "error",
+    "no-multi-spaces": [
+      "error",
+      {
+        "ignoreEOLComments": true,
+        "exceptions": {
+          "Property": true,
+          "SwitchCase": true,
+        },
+      },
+    ],
     "no-multiple-empty-lines": "error",
     "no-new-wrappers": "error",
     "no-restricted-syntax": [
@@ -159,6 +175,10 @@ module.exports = {
     "no-underscore-dangle": "error",
     "no-unsafe-finally": "error",
     "no-var": "error",
+    "object-curly-spacing": [
+      "error",
+      "always",
+    ],
     "object-shorthand": [
       "error",
       "never"
@@ -178,6 +198,10 @@ module.exports = {
           "/"
         ]
       }
+    ],
+    "template-curly-spacing": [
+      "error",
+      "always",
     ],
     "unicorn/filename-case": "error",
     "use-isnan": "error",
