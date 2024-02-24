@@ -40,6 +40,6 @@
     "tailwindcss": "3.1.8",
     "tailwindcss-touch": "1.0.1",
     "tslint": "5.9.1",
-    "typescript": "4.5.3"
+    "typescript": "5.2.2"
   }
 }
