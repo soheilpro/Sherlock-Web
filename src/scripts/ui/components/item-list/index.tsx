@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IItem } from '../../core';
+import { IItem } from '../../../core';
 import { Item } from '../item';
 
 interface IItemListProps {

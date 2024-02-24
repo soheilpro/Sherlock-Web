@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IFolder } from '../../core';
+import { IFolder } from '../../../core';
 import { FolderFillIcon, FolderOpenFillIcon } from '../images/icons';
 
 interface IFolderProps {

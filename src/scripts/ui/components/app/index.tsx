@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IDatabase, DatabaseManager } from '../../core';
-import { IStorage, IFile } from '../../storage';
+import { IDatabase, DatabaseManager } from '../../../core';
+import { IStorage, IFile } from '../../../storage';
 import { Database } from '../database';
 import { FileList } from '../file-list';
 import { Layout } from '../layout';

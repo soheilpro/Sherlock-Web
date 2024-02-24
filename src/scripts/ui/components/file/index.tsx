@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IFile } from '../../storage';
+import { IFile } from '../../../storage';
 
 interface IFileProps {
   file: IFile;

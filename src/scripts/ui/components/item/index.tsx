@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IItem } from '../../core';
+import { IItem } from '../../../core';
 import { ClipboardFillIcon, ClipboardLineIcon, EyeFillIcon, EyeLineIcon } from '../images/icons';
 
 interface IItemProps {

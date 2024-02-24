@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { IDatabase, IFolder } from '../../core';
-import { IFile, IStorage } from '../../storage';
+import { IDatabase, IFolder } from '../../../core';
+import { IFile, IStorage } from '../../../storage';
 import { FolderView } from '../folder-view';
 import { SearchInput } from '../search-input';
 import { SearchResults } from '../search-results';

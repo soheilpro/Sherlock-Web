@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IStorage } from '../../storage';
+import { IStorage } from '../../../storage';
 import { Bug2LineIcon, ComputerLineIcon, DriveFillIcon } from '../images/icons';
 
 interface IStorageProps {
