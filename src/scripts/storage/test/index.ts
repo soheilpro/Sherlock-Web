@@ -7,11 +7,11 @@ export class TestStorage extends EventTarget implements IStorage {
   public is_slow = false;
   public is_initialized = true;
 
-  public init(): Promise<void> {
-    return Promise.resolve();
+  public async init(): Promise<void> {
+    return;
   }
 
-  public getFiles(): Promise<IFile[]> {
+  public async getFiles(): Promise<IFile[]> {
     const files: IFile[] = [
       {
         name: 'test1.sdb',
@@ -21,7 +21,7 @@ export class TestStorage extends EventTarget implements IStorage {
       },
     ];
 
-    return Promise.resolve(files);
+    return files;
   }
 
   public async getFileData(file: IFile): Promise<ArrayBuffer> {

@@ -7,9 +7,9 @@ export class GoogleDriveStorage extends EventTarget implements IStorage {
   public is_slow = true;
   public is_initialized = false;
 
-  public init(): Promise<void> {
+  public async init(): Promise<void> {
     if (this.is_initialized)
-      return Promise.resolve();
+      return;
 
     return new Promise(resolve => {
       const script_element = document.createElement('script');

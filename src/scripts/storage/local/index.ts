@@ -6,8 +6,8 @@ export class LocalStorage extends EventTarget implements IStorage {
   public is_slow = false;
   public is_initialized = true;
 
-  public init(): Promise<void> {
-    return Promise.resolve();
+  public async init(): Promise<void> {
+    return;
   }
 
   public getFiles(): Promise<IFile[]> {
