@@ -1,5 +1,9 @@
 import { IFile, IStorage } from '../types';
 
+interface ILocalStorageFile extends IFile {
+  handle: File;
+}
+
 export class LocalStorage extends EventTarget implements IStorage {
   public id = 'local';
   public name = 'Local';
@@ -21,7 +25,7 @@ export class LocalStorage extends EventTarget implements IStorage {
 
         const files = local_files.map(localFile => ({
           name: localFile.name,
-          metadata: localFile,
+          handle: localFile,
         }));
 
         document.body.removeChild(input_element);
@@ -34,13 +38,13 @@ export class LocalStorage extends EventTarget implements IStorage {
     });
   }
 
-  public getFileData(file: IFile): Promise<ArrayBuffer> {
+  public getFileData(file: ILocalStorageFile): Promise<ArrayBuffer> {
     return new Promise(resolve => {
       const file_reader = new FileReader();
 
       file_reader.addEventListener('load', (event: any) => resolve(event.target.result));
 
-      file_reader.readAsArrayBuffer(file.metadata);
+      file_reader.readAsArrayBuffer(file.handle);
     });
   }
 }

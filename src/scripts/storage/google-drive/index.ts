@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { IFile, IStorage } from '../types';
 
+interface IGoogleDriveStorageFile extends IFile {
+  handle: gapi.client.drive.File;
+}
+
 export class GoogleDriveStorage extends EventTarget implements IStorage {
   public id = 'google-drive';
   public name = 'Google Drive';
@@ -45,16 +49,16 @@ export class GoogleDriveStorage extends EventTarget implements IStorage {
 
     return response.result.files!.map(googleDriveFile => ({
       name: googleDriveFile.name!,
-      metadata: googleDriveFile,
+      handle: googleDriveFile,
     }));
   }
 
-  public async getFileData(file: IFile): Promise<ArrayBuffer> {
+  public async getFileData(file: IGoogleDriveStorageFile): Promise<ArrayBuffer> {
     const oauth_token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
 
     const response = await axios.request({
       baseURL: 'https://www.googleapis.com/drive/v3/files/',
-      url: file.metadata.id,
+      url: file.handle.id,
       params: {
         'alt': 'media',
       },

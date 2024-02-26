@@ -1,6 +1,5 @@
 export interface IFile {
   name: string;
-  metadata?: any;
 }
 
 export interface IStorage extends EventTarget {
