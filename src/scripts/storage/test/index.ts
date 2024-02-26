@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { IFile, IStorage } from '../types';
 
 export class TestStorage extends EventTarget implements IStorage {
@@ -25,11 +24,8 @@ export class TestStorage extends EventTarget implements IStorage {
   }
 
   public async getFileData(file: IFile): Promise<ArrayBuffer> {
-    const response = await axios.request({
-      url: file.name,
-      responseType: 'arraybuffer',
-    });
+    const response = await fetch(file.name);
 
-    return response.data;
+    return response.arrayBuffer();
   }
 }

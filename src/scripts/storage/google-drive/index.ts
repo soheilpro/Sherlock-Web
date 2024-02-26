@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { IFile, IStorage } from '../types';
 
 interface IGoogleDriveStorageFile extends IFile {
@@ -56,18 +55,16 @@ export class GoogleDriveStorage extends EventTarget implements IStorage {
   public async getFileData(file: IGoogleDriveStorageFile): Promise<ArrayBuffer> {
     const oauth_token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token;
 
-    const response = await axios.request({
-      baseURL: 'https://www.googleapis.com/drive/v3/files/',
-      url: file.handle.id,
-      params: {
-        'alt': 'media',
-      },
+    const response = await fetch(`https://www.googleapis.com/drive/v3/files/${ file.handle.id }?alt=media`, {
       headers: {
         'Authorization': `Bearer ${ oauth_token }`,
       },
-      responseType: 'arraybuffer',
     });
 
-    return response.data;
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    return response.arrayBuffer();
   }
 }
