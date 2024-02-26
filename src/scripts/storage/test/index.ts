@@ -1,6 +1,7 @@
-import { IFile, IStorage } from '../types';
+import { EventEmitter } from '../../event-emitter';
+import { IFile, IStorage, StorageEventType } from '../types';
 
-export class TestStorage extends EventTarget implements IStorage {
+export class TestStorage extends EventEmitter<StorageEventType> implements IStorage {
   public id = 'test';
   public name = 'Test';
   public is_slow = false;

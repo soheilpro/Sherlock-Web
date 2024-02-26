@@ -1,10 +1,11 @@
-import { IFile, IStorage } from '../types';
+import { EventEmitter } from '../../event-emitter';
+import { IFile, IStorage, StorageEventType } from '../types';
 
 interface ILocalStorageFile extends IFile {
   handle: File;
 }
 
-export class LocalStorage extends EventTarget implements IStorage {
+export class LocalStorage extends EventEmitter<StorageEventType> implements IStorage {
   public id = 'local';
   public name = 'Local';
   public is_slow = false;

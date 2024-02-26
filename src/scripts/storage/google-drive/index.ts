@@ -1,10 +1,11 @@
-import { IFile, IStorage } from '../types';
+import { EventEmitter } from '../../event-emitter';
+import { IFile, IStorage, StorageEventType } from '../types';
 
 interface IGoogleDriveStorageFile extends IFile {
   handle: gapi.client.drive.File;
 }
 
-export class GoogleDriveStorage extends EventTarget implements IStorage {
+export class GoogleDriveStorage extends EventEmitter<StorageEventType> implements IStorage {
   public id = 'google-drive';
   public name = 'Google Drive';
   public is_slow = true;
@@ -27,7 +28,7 @@ export class GoogleDriveStorage extends EventTarget implements IStorage {
           });
 
           this.is_initialized = true;
-          this.dispatchEvent(new Event('initialized'));
+          this.emit('initialized');
 
           return resolve();
         });

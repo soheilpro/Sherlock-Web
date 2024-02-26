@@ -1,8 +1,12 @@
+import { IEventEmitter } from '../event-emitter';
+
 export interface IFile {
   name: string;
 }
 
-export interface IStorage extends EventTarget {
+export type StorageEventType = 'initialized';
+
+export interface IStorage extends IEventEmitter<StorageEventType> {
   id: string;
   name: string;
   is_slow: boolean;
