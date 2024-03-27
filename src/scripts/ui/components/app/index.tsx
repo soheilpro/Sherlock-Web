@@ -47,8 +47,15 @@ export function App(props: IAppProps): JSX.Element {
       return;
 
     if (files.length === 1) {
+      if (storage.is_slow)
+        set_is_loading_file_data(true);
+
       const file = files[0];
       const file_data = await storage.getFileData(file);
+
+      if (storage.is_slow)
+        set_is_loading_file_data(false);
+
       const database = props.database_manager.loadDatabase(file_data, '');
 
       set_file(file);
