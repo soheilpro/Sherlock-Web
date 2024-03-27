@@ -10,8 +10,13 @@ export class StorageManager implements IStorageManager {
     else if (LocalStorage.isAvailable())
       storages.push(new LocalStorage());
 
-    if (GoogleDriveStorage.isAvailable())
-      storages.push(new GoogleDriveStorage());
+    if (GoogleDriveStorage.isAvailable()) {
+      storages.push(new GoogleDriveStorage({
+        app_id: process.env.GOOGLE_API_APP_ID,
+        client_id: process.env.GOOGLE_API_CLIENT_ID,
+        developer_key: process.env.GOOGLE_API_DEVELOPER_KEY,
+      }));
+    }
 
     if (TestStorage.isAvailable())
       storages.push(new TestStorage());
