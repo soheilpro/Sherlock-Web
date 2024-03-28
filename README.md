@@ -7,6 +7,8 @@ Sherlock is a web application for managing passwords and other personal informat
 + Windows GUI: https://github.com/soheilpro/Sherlock-Win
 
 ## Version History
++ **3.1**
+	+ Added write support for Google Drive storage.
 + **3.0**
 	+ Added support for editing database files.
 + **2.0**
