@@ -108,14 +108,7 @@ export class GoogleDriveStorage extends EventEmitter<StorageEventType> implement
         },
       });
 
-      if (this.access_token === undefined) {
-        // Prompt the user to select a Google Account and ask for consent to share their data when establishing a new session.
-        token_client.requestAccessToken({ prompt: 'consent' });
-      }
-      else {
-        // Skip display of account chooser and consent dialog for an existing session.
-        token_client.requestAccessToken({ prompt: '' });
-      }
+      token_client.requestAccessToken({ prompt: '' });
     });
   }
 
