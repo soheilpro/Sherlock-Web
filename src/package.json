@@ -4,8 +4,7 @@
   "scripts": {
     "build:ts": "tsc --build tsconfig.json",
     "build": "npm run build:ts",
-    "start": "parcel serve ./index.html --dist-dir ../out",
-    "publish": "rm -rf ../publish && parcel build ./index.html --dist-dir ../publish --no-cache",
+    "publish": "rm -rf ../publish && parcel build ./index.html ./service-worker.ts --dist-dir ../publish --no-cache",
     "clean": "rm -rf ../out",
     "lint:fix": "npm run lint:ts:fix",
     "lint:ts:fix": "eslint --ext .ts,.tsx --fix .",
@@ -39,11 +38,13 @@
     "eslint-plugin-import": "2.28.1",
     "eslint-plugin-unicorn": "48.0.1",
     "parcel": "2.7.0",
+    "parcel-namer-hashless": "1.0.6",
     "postcss": "8.4.31",
     "postcss-cli": "9.1.0",
     "process": "0.11.10",
     "tailwindcss": "3.3.3",
     "tailwindcss-touch": "1.0.1",
     "typescript": "5.2.2"
-  }
+  },
+  "parcel-namer-hashless": {}
 }

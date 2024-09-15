@@ -13,3 +13,7 @@ const database_manager = new DatabaseManager();
 
 const container = document.getElementById('app')!;
 createRoot(container).render(<App storages={ storages } database_manager={ database_manager } />);
+
+navigator.serviceWorker.register(new URL('/service-worker.js', window.location.origin)).catch(error => {
+  console.error('Service worker registration failed.', error);
+});
